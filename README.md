@@ -10,7 +10,7 @@
 
 - Python 3.10
 - OpenAI key
-- Redis database up&runnig
+- Your Redis database already up&runnig
 
 
 **Install python modules**
