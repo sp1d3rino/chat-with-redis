@@ -3,10 +3,10 @@ import json
 from openai import OpenAI
 from decouple import Config, Csv, config
 
-# Initialize OpenAI client (replace with your API key)
+# Initialize OpenAI client 
 client = OpenAI(api_key=config('API_KEY'))
 
-# Initialize Redis connection (adjust host, port, password as needed)
+# Initialize Redis connection 
 redis_client = redis.Redis(
     host= config('DB_HOST'),
     port=config('DB_PORT'),
