@@ -7,6 +7,10 @@ from decouple import Config, Csv, config
 # Initialize OpenAI client
 client = OpenAI(api_key=config('API_KEY'))
 
+
+
+
+# STEP1. Retrieve all Redis schema information
 # Initialize Redis connection
 redis_client = redis.Redis(
     host=config('DB_HOST'),
@@ -33,7 +37,8 @@ schema_string = "\n".join(
      for entry in schema_dict]
 )
 
-# Define the tool for querying Redis
+
+# STEP2. Define the tool for querying Redis
 tools = [
     {
         "type": "function",
@@ -62,7 +67,7 @@ tools = [
     }
 ]
 
-# Function to query Redis
+# Step 3. Function to query Redis
 def query_redis(redis_client, query_str: str) -> str:
     """Query Redis hash keys and return plain text result."""
     try:
@@ -93,7 +98,7 @@ def query_redis(redis_client, query_str: str) -> str:
     except Exception as e:
         return f"Error: {str(e)}"
 
-# Streamlit App
+# Step 4. write the Streamlit App
 def main():
     # Load external CSS
     with open("style.css") as f:
