@@ -1,9 +1,9 @@
 # Chat with Redis
-### If you are looking for a Redis interpreter can speak in natural language, you can use this app to implement it.
+### Connect to your Redis database and query all data using a natural language prompting.
 
 
 
-#### Let's see how does it works
+#### Let's see how does it work
 
 
 **Requirements**
@@ -28,8 +28,10 @@ DB_PASSWORD='ENTER-YOUR-REDIS-PASSWORD'
 ```
 
 
+
 **Run the code**
 ```bash
-python app.py
+streamlit run app.py
 ```
 
+![alt text](redischat.png)
