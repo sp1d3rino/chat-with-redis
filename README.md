@@ -35,7 +35,7 @@ streamlit run app.py
 
 ### Let see how does the code work
 
-**STEP1.** Retrieve all Redis schema information. With the following methos we prepare all schema data to submit to LLM. In this way the GTP-4o LLM is able to understand where jump into before preparing a query.
+**STEP1.** First of all we need to retrieve all Redis schema information. With the following method we are able get the whole redis schema to submit to LLM. In this way the GTP-4o LLM will be able to understand where it needs to jump into before preparing a query.
 
 ```python
 # Function to get schema of hash keys
@@ -49,16 +49,10 @@ def get_redis_hash_schema(redis_client):
             schema.append({"key_name": key, "fields": fields})
     return schema
 
-# Build schema string for the AI
-schema_dict = get_redis_hash_schema(redis_client)
-schema_string = "\n".join(
-    [f"Hash Key: {entry['key_name']} (Fields: {', '.join(entry['fields'])})"
-     for entry in schema_dict]
-)
 ```
 
 
-**STEP2.** Define the tool for querying Redis. This is the part where define the function ***query_redis*** along with Redis schema to send to GTP-4o LLM.
+**STEP2.** Define the tool for querying Redis. This is the part where define the function ***query_redis*** along with Redis schema to send to GTP-4o LLM. Take a look that here we are creating a AI agent that is able to decide if the rensponse is a possibile query to run on Redis or not. So it's crucial to properly formulate how it should elaborate the input information before the next step.
 
 ```python
 tools = [
@@ -125,7 +119,7 @@ def query_redis(redis_client, query_str: str) -> str:
         return f"Error: {str(e)}"
 ```
 
-**Step 4.** In the main we will use Streamlit as user interface and chat.completion API to ask LLM to check if the user request could be a Redis query and if so to execute it. As you can see in the following code excerpt the ***client.chat.completions.create*** method is invoked twice. The first time is to ask LLM to check if the response can be formulated through the AI function query_redis. Next, the LLM is invoked one more time to ask if is needed further LLM reasoning to arrange the final response (e.g. special formatting, to do some consideration about the query output).
+**Step4.** In the main we will use Streamlit as user interface and chat.completion API to ask LLM to check if the user request could be a Redis query and if so to execute it. As you can see in the following code excerpt the ***client.chat.completions.create*** method is invoked twice. The first time is to ask LLM to check if the response can be formulated through the AI function query_redis. Next, the LLM is invoked one more time to ask if is needed further LLM reasoning to arrange the final response (e.g. special formatting, to do some consideration about the query output).
 ```python
 def main():
 ...
